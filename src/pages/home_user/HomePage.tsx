@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './HomePage.css';
 import api from '../../services/api';
@@ -114,7 +114,7 @@ const HomePage: React.FC<UserProps> = ({ onLogout }) => {
   const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth <= 768);
   
   // State cho mobile messages view
-  const [showMobileMessagesContent, setShowMobileMessagesContent] = useState<boolean>(false);
+  const [_showMobileMessagesContent, _setShowMobileMessagesContent] = useState<boolean>(false);
   
   // Tự động cập nhật tổng số tin nhắn chưa đọc khi danh sách conversations thay đổi
   useEffect(() => {
@@ -370,7 +370,7 @@ const HomePage: React.FC<UserProps> = ({ onLogout }) => {
       }
     };
     
-    const handleUnreadCountUpdate = (data: any) => {
+    const handleUnreadCountUpdate = (_data: any) => {
       refreshConversations();
     };
     
@@ -534,7 +534,7 @@ const HomePage: React.FC<UserProps> = ({ onLogout }) => {
       
       // Reset mobile messages content khi chuyển sang desktop
       if (!newIsMobile) {
-        setShowMobileMessagesContent(false);
+        _setShowMobileMessagesContent(false);
         setCurrentConversation(null);
       }
     };
@@ -664,7 +664,7 @@ const HomePage: React.FC<UserProps> = ({ onLogout }) => {
   // Handler cho mobile messages view
   const handleMobileMessagesBack = () => {
     if (isMobile) {
-      setShowMobileMessagesContent(false);
+      _setShowMobileMessagesContent(false);
       setCurrentConversation(null);
     }
   };
@@ -680,14 +680,7 @@ const HomePage: React.FC<UserProps> = ({ onLogout }) => {
     handleConversationUpdate(conversation);
     if (isMobile) {
       // Trên mobile, chuyển sang view messages content
-      setShowMobileMessagesContent(true);
-    }
-  };
-
-  // Xử lý click vào overlay để đóng sidebar
-  const handleOverlayClick = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget) {
-      handleMobileMessagesBack();
+      _setShowMobileMessagesContent(true);
     }
   };
 

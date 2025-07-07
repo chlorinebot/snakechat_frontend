@@ -41,29 +41,10 @@ const App: React.FC = () => {
   const isRegularUser = user.role_id === 2;
   const heartbeatTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const [isTabActive, setIsTabActive] = useState<boolean>(document.visibilityState === 'visible');
-  const [theme, setTheme] = useState<string>(() => {
-    const savedTheme = localStorage.getItem('darkMode');
-    return savedTheme === 'true' ? 'dark' : 'light';
-  });
 
   // Thêm state và ref để theo dõi refresh
-  const [refreshCount, setRefreshCount] = useState<number>(0);
-  const refreshTimestampsRef = useRef<number[]>([]);
   const refreshThreshold = 20; // Số lần refresh tối đa trong khoảng thời gian
   const refreshTimeWindow = 5000; // Khoảng thời gian 5 giây
-
-  // Hàm thay đổi theme
-  const toggleTheme = () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light';
-    setTheme(newTheme);
-    if (newTheme === 'dark') {
-      document.documentElement.setAttribute('data-theme', 'dark');
-      localStorage.setItem('darkMode', 'true');
-    } else {
-      document.documentElement.removeAttribute('data-theme');
-      localStorage.setItem('darkMode', 'false');
-    }
-  };
 
   // Hàm cập nhật thời gian hoạt động cuối cùng
   const updateLastActivityTime = () => {
@@ -335,17 +316,17 @@ const App: React.FC = () => {
       if (checkUserActivity()) {
         updateOnlineStatus();
       }
-    }, 10000); // Cập nhật mỗi 10 giây
+    }, HEARTBEAT_INTERVAL); // Cập nhật mỗi 10 giây
     
     // Thiết lập interval cho heartbeat
     heartbeatTimerRef.current = setInterval(() => {
       sendHeartbeat();
-    }, 10000); // Gửi heartbeat mỗi 10 giây
+    }, HEARTBEAT_INTERVAL); // Gửi heartbeat mỗi 10 giây
     
     // Thiết lập interval để kiểm tra định kỳ sự hoạt động của người dùng
     const activityCheckId = setInterval(() => {
       checkUserActivity();
-    }, 10000); // Kiểm tra mỗi 10 giây
+    }, HEARTBEAT_INTERVAL); // Kiểm tra mỗi 10 giây
     
     // Thiết lập interval để cập nhật thông tin bạn bè
     const friendsUpdateId = setInterval(() => {
@@ -367,7 +348,7 @@ const App: React.FC = () => {
           }
         }
       }
-    }, 10000); // 10 giây
+    }, HEARTBEAT_INTERVAL); // 10 giây
     
     // Kiểm tra trạng thái khi reload
     const checkOfflineOnReload = () => {
@@ -393,7 +374,7 @@ const App: React.FC = () => {
     checkOfflineOnReload();
     
     // Xử lý sự kiện khi người dùng đóng tab/trình duyệt
-    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+    const handleBeforeUnload = (_event: BeforeUnloadEvent) => {
       console.log('Sự kiện beforeunload đã được kích hoạt');
       
       // Thực hiện các hành động offline ngay lập tức
@@ -533,7 +514,7 @@ const App: React.FC = () => {
         if (!heartbeatTimerRef.current) {
           heartbeatTimerRef.current = setInterval(() => {
             sendHeartbeat();
-          }, 10000);
+          }, HEARTBEAT_INTERVAL);
         }
         
         // Cập nhật lại thời gian hoạt động

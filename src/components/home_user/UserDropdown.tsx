@@ -25,31 +25,6 @@ const UserDropdown: React.FC<UserDropdownProps> = ({
   lastActivity,
   isMobile = false
 }) => {
-  const getLastActivityText = () => {
-    if (!lastActivity) return 'Không có dữ liệu';
-    try {
-      const date = new Date(lastActivity);
-      if (isNaN(date.getTime())) return 'Không có dữ liệu';
-      
-      const now = new Date();
-      const diffMs = now.getTime() - date.getTime();
-      const diffMins = Math.floor(diffMs / 60000);
-      const diffHours = Math.floor(diffMs / 3600000);
-      const diffDays = Math.floor(diffMs / 86400000);
-
-      if (diffMins < 60) {
-        return `Hoạt động lần cuối ${diffMins} phút trước`;
-      } else if (diffHours < 24) {
-        return `Hoạt động lần cuối ${diffHours} giờ trước`;
-      } else {
-        return `Hoạt động lần cuối ${diffDays} ngày trước`;
-      }
-    } catch (error) {
-      console.error('Lỗi khi tính thời gian hoạt động cuối cùng:', error);
-      return 'Không có dữ liệu';
-    }
-  };
-
   const isOnline = userStatus === 'online';
   
   const getStatusText = () => {
@@ -81,7 +56,6 @@ const UserDropdown: React.FC<UserDropdownProps> = ({
   const textColor = isMobile ? '#ffffff' : '#444444';
   const secondaryTextColor = isMobile ? '#aaaaaa' : '#777777';
   const borderColor = isMobile ? '#444444' : '#f5f5f5';
-  const itemHoverBg = isMobile ? '#444444' : '#f5f5f5';
   const iconColor = isMobile ? '#ffffff' : '#0084ff';
 
   const dropdownStyle = isMobile 

@@ -121,14 +121,6 @@ const Announcements: React.FC<AnnouncementsProps> = ({ onLogout }) => {
     setShowAddModal(true);
   };
   
-  // Mở modal sửa thông báo
-  const openEditModal = (announcement: Announcement) => {
-    setCurrentAnnouncement(announcement);
-    setContent(announcement.AnnouncementContent);
-    setAnnouncementType(announcement.AnnouncementType);
-    setShowEditModal(true);
-  };
-  
   // Mở modal xem chi tiết thông báo
   const openViewModal = (announcement: Announcement) => {
     setCurrentAnnouncement(announcement);
@@ -167,36 +159,6 @@ const Announcements: React.FC<AnnouncementsProps> = ({ onLogout }) => {
     } catch (error) {
       console.error('Lỗi khi thêm thông báo:', error);
       setMessage('Lỗi khi thêm thông báo');
-    }
-  };
-  
-  // Cập nhật thông báo
-  const handleEdit = async () => {
-    if (!currentAnnouncement) return;
-    if (!content && !announcementType) {
-      setMessage('Vui lòng điền ít nhất một thông tin để cập nhật');
-      return;
-    }
-    
-    try {
-      const response = await api.updateAnnouncement(
-        currentAnnouncement.AnnouncementID,
-        {
-          content,
-          announcementType
-        }
-      );
-      
-      if (response.success) {
-        setMessage('Cập nhật thông báo thành công');
-        fetchAnnouncements();
-        setShowEditModal(false);
-      } else {
-        setMessage('Không thể cập nhật thông báo: ' + response.message);
-      }
-    } catch (error) {
-      console.error('Lỗi khi cập nhật thông báo:', error);
-      setMessage('Lỗi khi cập nhật thông báo');
     }
   };
   

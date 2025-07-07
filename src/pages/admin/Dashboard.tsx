@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card } from 'react-bootstrap';
-import type { UserLockStatus, OnlineStatus } from '../../services/api';
 import api from '../../services/api';
 import AdminLayout from '../../components/admin/Layout';
 import './Dashboard.css';
 import { useNavigate } from 'react-router-dom';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement, Title, LineElement, PointElement } from 'chart.js';
-import { Pie, Bar } from 'react-chartjs-2';
 
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement, Title, LineElement, PointElement);
 
@@ -149,7 +147,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
     }
   };
 
-  const generateMonthlyData = (total: number) => {
+  const generateMonthlyData = (_total: number) => {
     // Tạo dữ liệu ngẫu nhiên cho biểu đồ tháng
     const baseValues = [40, 60, 45, 80, 65, 75, 85, 90, 70, 60, 50, 75];
     

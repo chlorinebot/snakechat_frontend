@@ -1,6 +1,6 @@
 import React from 'react';
 import { Nav } from 'react-bootstrap';
-import { useLocation, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import './Sidebar.css';
 
 interface AdminSidebarProps {
@@ -8,14 +8,6 @@ interface AdminSidebarProps {
 }
 
 const AdminSidebar: React.FC<AdminSidebarProps> = ({ visible = true }) => {
-  const location = useLocation();
-  const currentPath = location.pathname;
-
-  // Hàm kiểm tra trạng thái active
-  const isActive = (path: string) => {
-    return currentPath === path;
-  };
-
   return (
     <div className={`admin-sidebar ${visible ? 'show' : ''}`}>
       <div className="admin-sidebar-header">

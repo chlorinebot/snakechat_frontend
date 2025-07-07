@@ -139,11 +139,6 @@ export interface Report {
   notes?: string; // Ghi chú
 }
 
-// Hàm kiểm tra trạng thái online của user
-const isUserOnline = (user: User) => {
-  return user.status === 'online';
-};
-
 // Helper function để lấy token từ localStorage
 const getToken = (): string => {
   return localStorage.getItem('token') || '';
@@ -221,7 +216,7 @@ export const api = {
   updateStatus: async (userId: number, status: 'online' | 'offline') => {
     try {
       // Gọi API cập nhật trạng thái vào database
-      const response = await axios.post<{ success: boolean; message: string }>(`${API_URL}/user/update-status`, {
+      await axios.post<{ success: boolean; message: string }>(`${API_URL}/user/update-status`, {
         user_id: userId,
         status
       });
@@ -256,7 +251,7 @@ export const api = {
   // Chấp nhận lời mời kết bạn
   acceptFriendRequest: async (friendshipId: number) => {
     try {
-      const response = await axios.put<{ success: boolean; message: string }>(`${API_URL}/friendship/accept/${friendshipId}`, {
+      await axios.put<{ success: boolean; message: string }>(`${API_URL}/friendship/accept/${friendshipId}`, {
         status: 'accepted'
       });
       
@@ -270,7 +265,7 @@ export const api = {
   // Từ chối hoặc hủy lời mời kết bạn
   rejectFriendRequest: async (friendshipId: number) => {
     try {
-      const response = await axios.delete<{ success: boolean; message: string }>(`${API_URL}/friendship/reject/${friendshipId}`);
+      await axios.delete<{ success: boolean; message: string }>(`${API_URL}/friendship/reject/${friendshipId}`);
       
       return { success: true, message: 'Đã từ chối/hủy lời mời kết bạn' };
     } catch (error: any) {
@@ -282,7 +277,7 @@ export const api = {
   // Hủy kết bạn
   removeFriend: async (friendshipId: number) => {
     try {
-      const response = await axios.delete<{ success: boolean; message: string }>(`${API_URL}/friendship/remove/${friendshipId}`);
+      await axios.delete<{ success: boolean; message: string }>(`${API_URL}/friendship/remove/${friendshipId}`);
       
       return { 
         success: true, 
@@ -855,7 +850,7 @@ export const api = {
   unblockUser: async (blockerId: number, blockedId: number) => {
     try {
       // Sử dụng URL với query params thay vì body trong DELETE request
-      const response = await axios.delete<{ success: boolean; message: string }>(
+      await axios.delete<{ success: boolean; message: string }>(
         `${API_URL}/user/unblock?blocker_id=${blockerId}&blocked_id=${blockedId}`
       );
       

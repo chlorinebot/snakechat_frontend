@@ -46,11 +46,6 @@ export interface Role {
   description: string;
 }
 
-// Hàm kiểm tra trạng thái online của user
-const isUserOnline = (user: User) => {
-  return user.status === 'online';
-};
-
 export const api = {
   // Lấy danh sách users
   getUsers: async () => {

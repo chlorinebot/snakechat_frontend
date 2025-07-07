@@ -414,7 +414,7 @@ const MessagesSidebar: React.FC<MessagesSidebarProps> = ({
     };
 
     // Hàm xử lý sự kiện tùy chỉnh cho thay đổi theme
-    const handleThemeChange = (e: Event) => {
+    const handleThemeChange = (_e: Event) => {
       const newDarkMode = localStorage.getItem('darkMode') === 'true';
       if (isDarkMode !== newDarkMode) {
         setIsDarkMode(newDarkMode);
