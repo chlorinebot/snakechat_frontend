@@ -1,0 +1,21 @@
+<svg width="1440" height="900" viewBox="0 0 1440 900" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <pattern id="smallGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/>
+    </pattern>
+    <pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse">
+      <rect width="100" height="100" fill="url(#smallGrid)"/>
+      <path d="M 100 0 L 0 0 0 100" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#grid)" />
+  
+  <circle cx="300" cy="200" r="100" fill="rgba(255,255,255,0.05)"/>
+  <circle cx="1100" cy="600" r="150" fill="rgba(255,255,255,0.05)"/>
+  <circle cx="700" cy="300" r="80" fill="rgba(255,255,255,0.05)"/>
+  <circle cx="1300" cy="200" r="60" fill="rgba(255,255,255,0.05)"/>
+  <circle cx="200" cy="700" r="120" fill="rgba(255,255,255,0.05)"/>
+  
+  <path d="M0,400 Q360,300 720,400 T1440,400" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2"/>
+  <path d="M0,600 Q360,500 720,600 T1440,600" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2"/>
+</svg> 

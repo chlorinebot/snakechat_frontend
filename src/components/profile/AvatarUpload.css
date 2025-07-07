@@ -1,0 +1,80 @@
+.avatar-upload-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.avatar-preview-container {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  margin-bottom: 15px;
+}
+
+.avatar-preview {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid #f0f0f0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.avatar-preview:hover {
+  border-color: #007bff;
+}
+
+.avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #e9ecef;
+  color: #6c757d;
+}
+
+.avatar-placeholder i {
+  font-size: 60px;
+}
+
+.camera-button {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #007bff;
+  color: white;
+  border: 2px solid white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.camera-button:hover {
+  background-color: #0056b3;
+  transform: scale(1.1);
+}
+
+.camera-button i {
+  font-size: 18px;
+}
+
+.file-input {
+  display: none;
+} 

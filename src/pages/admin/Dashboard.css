@@ -1,0 +1,653 @@
+.form-control-lg {
+  padding: 1rem;
+  font-size: 1rem;
+  border-radius: 0.5rem;
+  transition: var(--transition);
+}
+
+.form-control-lg:focus {
+  box-shadow: none;
+  border-color: var(--primary-color);
+  background-color: var(--card-bg) !important;
+}
+
+.form-label {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.btn-primary {
+  padding: 0.8rem;
+  font-size: 1rem;
+  border-radius: 0.5rem;
+  transition: var(--transition);
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+  background-color: var(--secondary-color);
+  border-color: var(--secondary-color);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(67, 97, 238, 0.3);
+}
+
+.card {
+  border-radius: 0.75rem;
+  overflow: hidden;
+  background-color: var(--card-bg);
+  border-color: var(--card-border);
+  box-shadow: 0 6px 15px var(--card-shadow);
+  transition: var(--transition);
+}
+
+/* Animation cho dashboard card */
+.dashboard-card {
+  transition: var(--transition);
+  transform: translateY(0);
+  box-shadow: 0 6px 15px var(--card-shadow) !important;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 25px var(--card-shadow) !important;
+}
+
+/* Hiệu ứng cho pulse animation */
+.pulse-animation {
+  display: inline-block;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+
+/* Hiệu ứng cho badge online */
+.online-badge {
+  position: relative;
+  animation: glowAnimation 2s infinite;
+  box-shadow: 0 0 10px rgba(40, 167, 69, 0.5);
+}
+
+@keyframes glowAnimation {
+  0% {
+    box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 15px rgba(40, 167, 69, 0.8);
+  }
+  100% {
+    box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
+  }
+}
+
+.table {
+  color: var(--text-color);
+  background-color: var(--card-bg);
+}
+
+.table thead {
+  background-color: var(--table-head-bg);
+}
+
+.table thead th {
+  color: var(--text-color);
+  border-color: var(--border-color);
+  font-weight: 600;
+}
+
+.table > :not(caption) > * > * {
+  padding: 1rem 1.5rem;
+  color: var(--text-color);
+  border-color: var(--border-color);
+  background-color: transparent;
+}
+
+.table > tbody > tr:hover {
+  background-color: var(--table-hover);
+}
+
+.table > tbody > tr > td {
+  vertical-align: middle;
+}
+
+.badge {
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition: var(--transition);
+}
+
+/* Animation cho biểu đồ */
+@keyframes chartBarAnimation {
+  0% {
+    height: 0;
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--text-muted);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-color);
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.cursor-pointer:hover {
+  background-color: var(--table-hover);
+}
+
+.chart-placeholder {
+  width: 100%;
+  height: 300px;
+  margin-top: 1rem;
+}
+
+.chart-bars {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  height: 250px;
+  margin-top: 1rem;
+  padding-bottom: 10px;
+}
+
+.chart-bar {
+  flex: 1;
+  margin: 0 4px;
+  background: linear-gradient(to top, #3498db, #5DADE2);
+  border-radius: 4px 4px 0 0;
+  transition: var(--transition);
+  position: relative;
+  animation: chartBarAnimation 1s forwards;
+}
+
+.chart-bar:hover {
+  background: linear-gradient(to top, #2980b9, #3498db);
+  transform: scaleY(1.05);
+}
+
+.chart-bar:hover::after {
+  content: attr(data-value) '%';
+  position: absolute;
+  top: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.progress {
+  background-color: var(--bg-secondary);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: inset 0 1px 3px var(--card-shadow);
+}
+
+.progress-bar {
+  transition: width 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
+  animation: progressAnimation 1.5s ease-out;
+}
+
+@keyframes progressAnimation {
+  0% {
+    width: 0;
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Thêm CSS cho nút thêm người dùng và modal */
+.modal-content {
+  border-radius: 12px;
+  border: none;
+  box-shadow: 0 8px 30px var(--card-shadow);
+  background-color: var(--card-bg);
+  color: var(--text-color);
+}
+
+.modal-header {
+  border-bottom: 1px solid var(--border-color);
+  padding: 1.5rem;
+  background-color: var(--card-bg);
+}
+
+.modal-body {
+  padding: 1.5rem;
+  background-color: var(--card-bg);
+}
+
+.modal-footer {
+  border-top: 1px solid var(--border-color);
+  padding: 1.5rem;
+  background-color: var(--card-bg);
+}
+
+.modal-title {
+  color: var(--text-color);
+}
+
+.close {
+  color: var(--text-color);
+}
+
+/* Thêm CSS cho nút thêm người dùng mới */
+.add-user-btn {  
+  background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));  
+  border: none;  
+  border-radius: 8px;  
+  font-weight: 500;  
+  letter-spacing: 0.5px;  
+  display: flex;  
+  align-items: center;  
+  justify-content: center;  
+  box-shadow: 0 4px 6px var(--card-shadow);
+  transition: var(--transition);
+  white-space: nowrap;  
+  text-align: center;  
+  min-width: 240px;  
+  font-size: 1rem;
+}
+
+.add-user-btn:hover, .add-user-btn:focus {
+  background: linear-gradient(45deg, var(--secondary-color), #2a46c4);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px var(--card-shadow);
+}
+
+.add-user-btn:active {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px var(--card-shadow);
+}
+
+.add-user-btn i {
+  font-size: 1.1rem;
+}
+
+/* CSS cho ô tìm kiếm */
+.search-input {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 5px var(--card-shadow);
+  transition: var(--transition);
+}
+
+.search-input:hover, .search-input:focus-within {
+  box-shadow: 0 4px 8px var(--card-shadow);
+}
+
+.search-input .form-control {
+  padding: 0.6rem 1rem;
+  background-color: var(--input-bg);
+  color: var(--text-color);
+}
+
+.search-input .input-group-text {
+  padding-left: 1rem;
+  background-color: var(--input-bg);
+  border-color: var(--input-bg);
+  color: var(--text-muted);
+}
+
+/* CSS cho các nút thao tác */
+.action-btn {
+  border-radius: 6px;
+  padding: 0.4rem 0.8rem;
+  font-weight: 500;
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: none;
+  border-width: 1.5px;
+}
+
+.action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 3px 5px var(--card-shadow);
+}
+
+.edit-btn:hover {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: white;
+}
+
+.delete-btn:hover {
+  background-color: #dc3545;
+  border-color: #dc3545;
+  color: white;
+}
+
+.lock-btn:hover {
+  background-color: #ffc107;
+  border-color: #ffc107;
+  color: #212529;
+}
+
+.locked-btn:hover {
+  background-color: #6c757d;
+  border-color: #6c757d;
+  color: white;
+}
+
+/* CSS cho các nút trong modal footer */
+.btn-cancel {
+  border-radius: 6px;
+  padding: 0.6rem 1.2rem;
+  background-color: var(--bg-secondary);
+  border-color: var(--border-color);
+  color: var(--text-color);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  transition: var(--transition);
+}
+
+.btn-cancel:hover {
+  background-color: var(--table-hover);
+  border-color: var(--border-color);
+  color: var(--text-color);
+}
+
+.btn-action {
+  border-radius: 6px;
+  padding: 0.6rem 1.2rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  transition: var(--transition);
+  box-shadow: 0 2px 5px var(--card-shadow);
+}
+
+.btn-action:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px var(--card-shadow);
+}
+
+.btn-action:active:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 3px var(--card-shadow);
+}
+
+.btn-action:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* CSS cho phân trang */
+.pagination {
+  margin: 0;
+}
+
+.pagination .page-item .page-link {
+  border: none;
+  color: var(--text-color);
+  font-weight: 500;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  margin: 0 0.15rem;
+  transition: var(--transition);
+  background-color: transparent;
+}
+
+.pagination .page-item .page-link:hover {
+  background-color: var(--table-hover);
+  color: var(--primary-color);
+  transform: translateY(-2px);
+  box-shadow: 0 2px 5px var(--card-shadow);
+}
+
+.pagination .page-item.active .page-link {
+  background-color: var(--primary-color);
+  color: white;
+  box-shadow: 0 4px 8px var(--card-shadow);
+}
+
+.pagination .page-item.disabled .page-link {
+  color: var(--text-muted);
+  background-color: transparent;
+}
+
+.pagination .page-item:first-child .page-link,
+.pagination .page-item:last-child .page-link {
+  font-size: 0.875rem;
+}
+
+/* CSS cho form control trong dark mode */
+.form-control, .form-select {
+  background-color: var(--input-bg);
+  border-color: var(--border-color);
+  color: var(--text-color);
+}
+
+.form-control:focus, .form-select:focus {
+  background-color: var(--input-bg);
+  border-color: var(--primary-color);
+  color: var(--text-color);
+  box-shadow: 0 0 0 0.25rem rgba(67, 97, 238, 0.25);
+}
+
+/* CSS cho dropdown */
+.dropdown-menu {
+  background-color: var(--card-bg);
+  border-color: var(--border-color);
+  box-shadow: 0 0.5rem 1rem var(--card-shadow);
+}
+
+.dropdown-item {
+  color: var(--text-color);
+}
+
+.dropdown-item:hover, .dropdown-item:focus {
+  background-color: var(--table-hover);
+  color: var(--primary-color);
+}
+
+/* CSS cho alert */
+.alert {
+  background-color: var(--card-bg);
+  border-color: var(--border-color);
+  color: var(--text-color);
+}
+
+/* Đảm bảo text màu đúng trong dark mode */
+h1, h2, h3, h4, h5, h6, p, span, div {
+  color: var(--text-color);
+}
+
+/* Bổ sung styles cho dark mode */
+[data-theme="dark"] .table {
+  color: var(--text-color);
+  background-color: var(--card-bg);
+}
+
+[data-theme="dark"] .table > thead {
+  background-color: var(--table-head-bg);
+}
+
+[data-theme="dark"] .table > tbody > tr {
+  background-color: var(--card-bg);
+}
+
+[data-theme="dark"] .table > tbody > tr:hover {
+  background-color: var(--table-hover);
+}
+
+[data-theme="dark"] .table > :not(caption) > * > * {
+  color: var(--text-color);
+  border-color: var(--border-color);
+}
+
+/* CSS đặc biệt cho trang quản lý vai trò */
+[data-theme="dark"] table.table > tbody > tr > td {
+  color: var(--text-color) !important;
+}
+
+[data-theme="dark"] table.table > thead > tr > th {
+  background-color: var(--table-head-bg) !important;
+  color: var(--text-color) !important;
+}
+
+[data-theme="dark"] .fas.fa-sort,
+[data-theme="dark"] .fas.fa-sort-up,
+[data-theme="dark"] .fas.fa-sort-down {
+  color: var(--text-color) !important;
+}
+
+[data-theme="dark"] .table > tbody > tr:hover > td {
+  color: var(--text-color) !important;
+}
+
+[data-theme="dark"] .btn-outline-primary,
+[data-theme="dark"] .btn-outline-danger {
+  background-color: transparent !important;
+}
+
+[data-theme="dark"] .btn-outline-primary:hover,
+[data-theme="dark"] .btn-outline-danger:hover {
+  background-color: var(--table-hover) !important;
+}
+
+[data-theme="dark"] .btn-outline-primary i,
+[data-theme="dark"] .btn-outline-danger i {
+  color: inherit !important;
+}
+
+[data-theme="dark"] .bg-light {
+  background-color: var(--input-bg) !important;
+}
+
+[data-theme="dark"] .bg-white {
+  background-color: var(--card-bg) !important;
+}
+
+[data-theme="dark"] .border-0 {
+  border-color: var(--border-color) !important;
+}
+
+[data-theme="dark"] .form-control {
+  background-color: var(--input-bg);
+  color: var(--text-color);
+  border-color: transparent;
+}
+
+[data-theme="dark"] .form-control:focus {
+  background-color: var(--input-bg);
+  color: var(--text-color);
+}
+
+[data-theme="dark"] .card {
+  background-color: var(--card-bg);
+}
+
+[data-theme="dark"] .card-header {
+  background-color: var(--card-bg);
+  border-bottom-color: var(--border-color);
+}
+
+[data-theme="dark"] .card-body {
+  background-color: var(--card-bg);
+}
+
+[data-theme="dark"] .text-primary {
+  color: #809bff !important;
+}
+
+[data-theme="dark"] .text-muted {
+  color: var(--text-muted) !important;
+}
+
+[data-theme="dark"] .modal-header,
+[data-theme="dark"] .modal-body,
+[data-theme="dark"] .modal-footer {
+  background-color: var(--card-bg);
+  color: var(--text-color);
+}
+
+[data-theme="dark"] .btn-outline-primary:hover {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+[data-theme="dark"] .btn-outline-danger:hover {
+  background-color: #dc3545;
+  color: white;
+}
+
+[data-theme="dark"] .btn-outline-warning:hover {
+  background-color: #ffc107;
+  color: #212529;
+}
+
+[data-theme="dark"] .btn-outline-secondary:hover {
+  background-color: #6c757d;
+  color: white;
+}
+
+[data-theme="dark"] .input-group-text {
+  background-color: var(--input-bg);
+  border-color: transparent;
+  color: var(--text-muted);
+}
+
+/* Hiệu ứng khi sắp xếp theo trạng thái */
+.table th.sorting-status {
+  position: relative;
+}
+
+.table th.sorting-status::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(to right, #28a745, #6c757d);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.table th.sorting-status:hover::after {
+  transform: scaleX(1);
+}
+
+.table th.sorting-active.sorting-status::after {
+  transform: scaleX(1);
+} 

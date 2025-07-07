@@ -1,0 +1,209 @@
+.admin-app-container {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--bg-color);
+  transition: var(--transition);
+}
+
+.admin-content-wrapper {
+  flex-grow: 1;
+  margin-left: 280px;
+  transition: var(--transition);
+  background-color: var(--bg-secondary);
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: 100vh;
+}
+
+.admin-sidebar-hidden .admin-content-wrapper {
+  margin-left: 0;
+}
+
+.admin-sidebar-hidden .admin-sidebar {
+  margin-left: -280px;
+}
+
+.admin-content-header {
+  height: 64px;
+  background-color: var(--header-bg);
+  box-shadow: 0 2px 8px var(--card-shadow);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  justify-content: space-between;
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+  width: calc(100% - 280px);
+  transition: var(--transition);
+}
+
+.admin-sidebar-hidden .admin-content-header {
+  width: 100%;
+}
+
+.admin-header-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.admin-content {
+  padding: 25px;
+  padding-top: 89px; /* 64px (header height) + 25px (padding) */
+  min-height: calc(100vh - 64px);
+  animation: fadeIn 0.4s ease-in;
+  color: var(--text-color);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Cập nhật nút toggle sidebar */
+.admin-sidebar-toggle {
+  border: none !important;
+  background: transparent !important;
+  color: var(--text-color) !important;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.admin-sidebar-toggle:hover {
+  background-color: var(--bg-secondary) !important;
+  color: var(--primary-color) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.admin-sidebar-toggle:active {
+  transform: translateY(0);
+}
+
+/* Độ sáng/tối của nội dung khi sidebar đóng/mở */
+.admin-sidebar-visible .admin-content-wrapper::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0);
+  pointer-events: none;
+  transition: var(--transition);
+  z-index: -1;
+}
+
+.admin-sidebar-hidden .admin-content-wrapper::before {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+/* Theme toggle button */
+.admin-theme-toggle-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-color);
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.admin-theme-toggle-btn:hover {
+  background-color: var(--bg-secondary);
+  color: var(--primary-color);
+  transform: translateY(-2px);
+}
+
+/* Overrides cho bootstrap trong admin */
+.admin-app-container .btn-light {
+  background-color: transparent;
+  border-color: transparent;
+  color: var(--text-color);
+}
+
+.admin-app-container .btn-light:hover, 
+.admin-app-container .btn-light:focus {
+  background-color: var(--bg-secondary);
+  border-color: transparent;
+  color: var(--text-color);
+}
+
+.admin-app-container .btn-outline-danger {
+  color: var(--text-color);
+  border-color: #dc3545;
+}
+
+.admin-app-container .btn-outline-danger:hover {
+  color: #fff;
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+
+/* Fix cho dark mode */
+[data-theme="dark"] .admin-app-container .btn-light {
+  color: var(--text-color);
+}
+
+[data-theme="dark"] .admin-app-container .btn-light:hover, 
+[data-theme="dark"] .admin-app-container .btn-light:focus {
+  background-color: #252525;
+  color: var(--text-color);
+}
+
+/* Fix cho dark mode - nút toggle sidebar */
+[data-theme="dark"] .admin-sidebar-toggle {
+  color: #e9ecef !important;
+}
+
+[data-theme="dark"] .admin-sidebar-toggle:hover {
+  background-color: #252525 !important;
+  color: var(--primary-color) !important;
+}
+
+@media (max-width: 992px) {
+  .admin-content-wrapper {
+    margin-left: 0;
+  }
+  
+  .admin-sidebar {
+    margin-left: -280px;
+  }
+  
+  .admin-content-header {
+    width: 100%;
+  }
+  
+  .admin-sidebar-visible .admin-sidebar {
+    margin-left: 0;
+  }
+  
+  .admin-sidebar-visible .admin-content-wrapper::before {
+    background-color: rgba(0, 0, 0, 0.3);
+    pointer-events: auto;
+  }
+  
+  .admin-content {
+    padding: 20px 15px;
+    padding-top: 84px; /* 64px (header height) + 20px (padding) */
+  }
+} 

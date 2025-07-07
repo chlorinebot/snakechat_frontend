@@ -1,0 +1,239 @@
+/* auth.css - Styles cho trang đăng nhập và đăng ký */
+
+.bg-auth {
+  background: linear-gradient(135deg, #4a5bb9, #5a3a8a);
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('/auth-bg.svg') no-repeat center center;
+  background-size: cover;
+  opacity: 0.1;
+  z-index: 0;
+}
+
+/* Hiệu ứng hình học */
+.bg-auth::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.15) 10%, transparent 10%),
+              radial-gradient(circle, rgba(255,255,255,0.15) 10%, transparent 10%);
+  background-size: 50px 50px;
+  background-position: 0 0, 25px 25px;
+  animation: moveBackground 60s linear infinite;
+  z-index: 1;
+}
+
+@keyframes moveBackground {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Hiệu ứng sóng */
+.bg-auth::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  background: url('/wave.svg') repeat-x;
+  background-size: 1000px 100px;
+  animation: wave 20s linear infinite;
+  opacity: 0.3;
+  z-index: 1;
+}
+
+@keyframes wave {
+  0% {
+    background-position-x: 0;
+  }
+  100% {
+    background-position-x: 1000px;
+  }
+}
+
+/* Hiệu ứng ánh sáng */
+.light-effect {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, transparent 70%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.light-effect-1 {
+  top: 10%;
+  left: 15%;
+  animation: float 8s ease-in-out infinite;
+}
+
+.light-effect-2 {
+  bottom: 20%;
+  right: 10%;
+  width: 300px;
+  height: 300px;
+  animation: float 12s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 0.4;
+  }
+  50% {
+    transform: translateY(-20px) scale(1.1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 0.4;
+  }
+}
+
+/* Đảm bảo các thành phần UI hiển thị trên các hiệu ứng nền */
+.card, .row, .col {
+  position: relative;
+  z-index: 2;
+}
+
+/* Hiệu ứng hover cho các nút và liên kết */
+.auth-button, .auth-link {
+  transition: all 0.3s ease;
+}
+
+.auth-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 7px 14px rgba(50, 50, 93, 0.2), 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+.auth-link:hover {
+  letter-spacing: 0.5px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .bg-auth::before {
+    background-size: 30px 30px;
+  }
+  
+  .light-effect {
+    display: none;
+  }
+}
+
+/* Ghi đè mạnh cho mọi nhãn label trong form */
+.form-label,
+.form-group label,
+.mb-3 label,
+.mb-4 label,
+.form-control-label,
+.col-form-label,
+label.text-muted,
+label.text-secondary,
+label.text-light,
+label.text-white,
+.form-label.text-muted,
+.form-label.text-secondary,
+.form-label.text-light,
+.form-label.text-white {
+  color: #000 !important;
+  font-weight: 700 !important;
+  opacity: 1 !important;
+}
+
+/* Đảm bảo các placeholder hiển thị rõ */
+input::placeholder,
+textarea::placeholder,
+select::placeholder {
+  color: #333 !important;
+  opacity: 1 !important;
+}
+
+/* Lớp bao bọc form với văn bản màu đen */
+.dark-text-form {
+  color: #000;
+}
+
+.dark-text-form label {
+  color: #000 !important;
+  font-weight: 700 !important;
+}
+
+.dark-text-form input,
+.dark-text-form select,
+.dark-text-form textarea {
+  color: #000 !important;
+  font-weight: 500 !important;
+  border-color: #666 !important;
+}
+
+.dark-text-form input::placeholder,
+.dark-text-form textarea::placeholder,
+.dark-text-form select::placeholder {
+  color: #333 !important;
+  opacity: 1 !important;
+}
+
+.dark-text-form .form-control {
+  color: #000 !important;
+  background-color: #fff !important;
+}
+
+.dark-text-form .auth-title,
+.dark-text-form .auth-subtitle {
+  color: #000 !important;
+}
+
+/* Đảm bảo các nhãn trong Bootstrap Form hiển thị đúng */
+.form-control-label,
+.form-label,
+.form-check-label {
+  color: #000 !important;
+  font-weight: 700 !important;
+  opacity: 1 !important;
+}
+
+/* Ghi đè cho label bị disabled hoặc có class .disabled */
+.form-label[disabled],
+.form-label.disabled,
+.form-group label[disabled],
+.form-group label.disabled,
+label[disabled],
+label.disabled,
+.form-label[aria-disabled='true'],
+.form-group label[aria-disabled='true'],
+label[aria-disabled='true'] {
+  color: #000 !important;
+  opacity: 1 !important;
+  font-weight: 700 !important;
+}
+
+/* Ghi đè cực mạnh cho label trong form đăng nhập/đăng ký */
+label.auth-label.form-label,
+.auth-label.form-label,
+label.auth-label,
+.auth-label,
+.form-label,
+label {
+  color: #000 !important;
+  font-weight: 700 !important;
+  opacity: 1 !important;
+  text-shadow: none !important;
+} 

@@ -1,0 +1,161 @@
+.mobile-navbar {
+  display: none; /* Ẩn mặc định trên desktop */
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 70px;
+  background-color: #1a1a1a;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  padding: 0 10px;
+  justify-content: space-around;
+  align-items: center;
+}
+
+/* Mobile dropdown styles */
+.mobile-dropdown {
+  position: fixed !important;
+  bottom: 80px !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  margin: 0 !important;
+  border-radius: 20px 20px 0 0 !important;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3) !important;
+  z-index: 9999 !important;
+  background-color: #333333 !important;
+  color: #ffffff !important;
+}
+
+/* Styles cho menu item trên mobile */
+.mobile-dropdown .dropdown-menu-item {
+  padding: 14px 20px !important;
+  margin: 2px 10px;
+  border-radius: 8px;
+}
+
+.mobile-dropdown .dropdown-menu-item svg {
+  width: 18px !important;
+  height: 18px !important;
+  margin-right: 12px !important;
+}
+
+.mobile-dropdown .dropdown-menu-item span {
+  font-size: 16px !important;
+}
+
+[data-theme="dark"] .mobile-dropdown {
+  background-color: #1a1a1a !important;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Styles cho dropdown menu item */
+.dropdown-menu-item {
+  transition: background-color 0.2s ease;
+}
+
+.mobile-dropdown .dropdown-menu-item:hover,
+.mobile-dropdown .dropdown-menu-item:active {
+  background-color: #444444 !important;
+}
+
+.profile-dropdown:not(.mobile-dropdown) .dropdown-menu-item:hover,
+.profile-dropdown:not(.mobile-dropdown) .dropdown-menu-item:active {
+  background-color: #f5f5f5 !important;
+}
+
+/* Styles cho nút đăng xuất */
+.mobile-dropdown .dropdown-menu-item:last-child {
+  margin: 5px 10px;
+  border-radius: 8px;
+  background-color: rgba(255, 59, 48, 0.2) !important;
+  border: 1px solid rgba(255, 59, 48, 0.3);
+}
+
+.mobile-dropdown .dropdown-menu-item:last-child:hover,
+.mobile-dropdown .dropdown-menu-item:last-child:active {
+  background-color: rgba(255, 59, 48, 0.3) !important;
+}
+
+.mobile-dropdown .dropdown-menu-item:last-child span {
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.3px;
+}
+
+/* Mobile sidebar item - giống với sidebar-item trên desktop */
+.mobile-sidebar-item {
+  width: 54px;
+  height: 54px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+}
+
+.mobile-sidebar-item:hover {
+  background-color: #2d2d2d;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.mobile-sidebar-item.active {
+  background-color: #222222;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  border: 2px solid #444444;
+}
+
+[data-theme="dark"] .mobile-sidebar-item.active {
+  background-color: #000000;
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+  border: 2px solid #444444;
+}
+
+.mobile-sidebar-item.active .message-icon,
+.mobile-sidebar-item.active .contacts-icon {
+  filter: brightness(1.5) drop-shadow(0 1px 2px rgba(255, 255, 255, 0.5));
+}
+
+.user-avatar-mobile {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  color: white;
+  font-size: 18px;
+  font-weight: 500;
+  transition: all 0.3s;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.mobile-sidebar-item:hover .user-avatar-mobile {
+  transform: scale(1.08);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* Dark mode */
+[data-theme="dark"] .mobile-navbar {
+  background-color: #1a1a1a;
+  border-top-color: #333;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Media query cho điện thoại */
+@media (max-width: 768px) {
+  .mobile-navbar {
+    display: flex;
+  }
+  
+  /* Ẩn sidebar gốc trên mobile */
+  .sidebar {
+    display: none;
+  }
+  
+  /* Điều chỉnh content để không bị che bởi navbar */
+  .content-wrapper {
+    padding-bottom: 80px !important;
+  }
+} 

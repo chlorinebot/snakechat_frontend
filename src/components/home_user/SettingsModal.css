@@ -1,0 +1,382 @@
+.settings-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+/* Quy tắc áp dụng cho toàn bộ modal */
+.settings-modal * {
+  color: #000000 !important;
+}
+
+.settings-modal {
+  background-color: white;
+  border-radius: 12px;
+  width: 80%;
+  max-width: 900px;
+  height: 80%;
+  max-height: 600px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+}
+
+.settings-modal-header {
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+  background-color: #f9f9f9;
+}
+
+.settings-modal-header h2 {
+  margin: 0;
+  font-size: 18px;
+  color: #000000;
+  font-weight: 700;
+}
+
+/* Đảm bảo tiêu đề "Cài đặt" luôn hiển thị màu đen */
+#settings-title-heading {
+  color: #000000 !important;
+  color: black !important;
+  font-weight: 900 !important;
+  font-size: 20px !important;
+}
+
+/* Đảm bảo cài đặt trong span luôn hiển thị đúng màu */
+#settings-title-heading span {
+  color: #000000 !important;
+}
+
+/* Ghi đè mọi quy tắc có thể ảnh hưởng */
+h2#settings-title-heading {
+  color: #000000 !important;
+}
+
+.close-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.close-button::before {
+  content: "×";
+  font-size: 32px;
+  font-weight: bold;
+  color: #000;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.close-button:hover::before {
+  color: #444;
+}
+
+.settings-modal-content {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.settings-sidebar {
+  width: 220px;
+  background-color: #ffffff;
+  padding: 0;
+  overflow-y: auto;
+  border-right: 1px solid #ddd;
+}
+
+.settings-sidebar-item {
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+  color: #000000;
+  font-weight: 600;
+  transition: background-color 0.2s;
+  border-left: 3px solid transparent;
+}
+
+.settings-sidebar-item:hover {
+  background-color: #f5f5f5;
+}
+
+.settings-sidebar-item.active {
+  background-color: #f5f5f5;
+  color: #0084ff;
+  font-weight: 700;
+  border-left: 3px solid #0084ff;
+}
+
+.settings-sidebar-item svg {
+  margin-right: 12px;
+  width: 22px;
+  height: 22px;
+}
+
+.settings-sidebar-item span {
+  color: #000000;
+  font-weight: 600;
+}
+
+.settings-sidebar-item.active span {
+  color: #0084ff;
+}
+
+.beta-tag {
+  background-color: #0084ff;
+  color: white;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 10px;
+  margin-left: 8px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.settings-content {
+  flex: 1;
+  padding: 25px 30px;
+  overflow-y: auto;
+}
+
+/* Notification settings styles */
+.notification-settings h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 17px;
+  color: #000;
+  font-weight: 600;
+}
+
+.settings-description {
+  color: #222;
+  margin-bottom: 25px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.notification-options {
+  margin-bottom: 35px;
+}
+
+.notification-option-images {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.option-image {
+  width: 170px;
+  height: 120px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  margin-right: 20px;
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.option-image.selected {
+  border-color: #0084ff;
+  background-color: #f0f7ff;
+}
+
+.laptop-image {
+  width: 100%;
+  height: 100%;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.laptop-blue {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="80" viewBox="0 0 24 24" fill="%230084ff"><path d="M20 18c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 6h16v10H4V6z"/></svg>');
+}
+
+.laptop-gray {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="80" viewBox="0 0 24 24" fill="%23999"><path d="M20 18c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 6h16v10H4V6z"/></svg>');
+}
+
+.notification-option-radios {
+  display: flex;
+  margin-top: 10px;
+}
+
+.radio-option {
+  margin-right: 25px;
+  display: flex;
+  align-items: center;
+}
+
+.radio-option input[type="radio"] {
+  margin-right: 8px;
+  accent-color: #0084ff;
+  width: 16px;
+  height: 16px;
+}
+
+.radio-option label {
+  color: #000;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.notification-sound-section {
+  margin-top: 30px;
+  padding-top: 25px;
+  border-top: 1px solid #ddd;
+}
+
+.sound-toggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sound-toggle span {
+  color: #000;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Toggle switch */
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 46px;
+  height: 22px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .3s;
+  border-radius: 22px;
+}
+
+.toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: .3s;
+  border-radius: 50%;
+}
+
+input:checked + .toggle-slider {
+  background-color: #0084ff;
+}
+
+input:checked + .toggle-slider:before {
+  transform: translateX(24px);
+}
+
+[data-theme="dark"] .settings-modal,
+[data-theme="dark"] .settings-modal-header,
+[data-theme="dark"] .settings-modal-content,
+[data-theme="dark"] .settings-content {
+  background: #18191a !important;
+  color: #fff !important;
+}
+[data-theme="dark"] .settings-modal-header h2,
+[data-theme="dark"] .settings-modal-header .close-button {
+  color: #fff !important;
+}
+[data-theme="dark"] .settings-sidebar,
+[data-theme="dark"] .settings-modal-sidebar {
+  background: #232526 !important;
+  color: #fff !important;
+  border-right: 1px solid #333 !important;
+}
+[data-theme="dark"] .settings-sidebar-item,
+[data-theme="dark"] .settings-sidebar-item.active,
+[data-theme="dark"] .settings-modal-sidebar .sidebar-item,
+[data-theme="dark"] .settings-modal-sidebar .sidebar-item.active {
+  background: transparent !important;
+  color: #fff !important;
+}
+[data-theme="dark"] .settings-sidebar-item.active span,
+[data-theme="dark"] .settings-modal-sidebar .sidebar-item.active span {
+  color: #4eaaff !important;
+}
+[data-theme="dark"] .settings-modal-content label,
+[data-theme="dark"] .settings-modal-content .section-title,
+[data-theme="dark"] .settings-modal-content .section-description,
+[data-theme="dark"] .radio-option label,
+[data-theme="dark"] .sound-toggle span {
+  color: #fff !important;
+}
+[data-theme="dark"] .settings-modal-content input,
+[data-theme="dark"] .settings-modal-content textarea {
+  background: #232526 !important;
+  color: #fff !important;
+  border: 1px solid #444 !important;
+}
+[data-theme="dark"] .settings-modal-content input::placeholder,
+[data-theme="dark"] .settings-modal-content textarea::placeholder {
+  color: #bbb !important;
+}
+
+[data-theme="dark"] .settings-content,
+[data-theme="dark"] .settings-modal-content,
+[data-theme="dark"] .settings-content *,
+[data-theme="dark"] .settings-modal-content * {
+  color: #fff !important;
+}
+
+[data-theme="dark"] #settings-title-heading,
+[data-theme="dark"] #settings-title-heading span {
+  color: #fff !important;
+}
+[data-theme="dark"] .settings-sidebar-item svg,
+[data-theme="dark"] .settings-modal-sidebar .sidebar-item svg {
+  color: #fff !important;
+  fill: #fff !important;
+}
+[data-theme="dark"] .settings-sidebar-item span,
+[data-theme="dark"] .settings-modal-sidebar .sidebar-item span {
+  color: #fff !important;
+}
+
+[data-theme="dark"] .close-button,
+[data-theme="dark"] .close-button::before,
+[data-theme="dark"] .settings-modal-header .close-button,
+[data-theme="dark"] .settings-modal-header .close-button::before {
+  color: #fff !important;
+} 

@@ -1,0 +1,47 @@
+.success-toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #4caf50;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 3000; /* Hiển thị trên cả modal xác nhận */
+  min-width: 250px;
+  animation: toast-appear 0.3s ease, toast-disappear 0.3s ease 2.7s forwards;
+}
+
+.success-toast-icon {
+  margin-right: 12px;
+  font-size: 20px;
+}
+
+.success-toast-message {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+@keyframes toast-appear {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes toast-disappear {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+} 

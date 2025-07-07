@@ -1,0 +1,202 @@
+/* UserForm.css - Styles cho form đăng nhập và đăng ký */
+
+.auth-form-container {
+  width: 100%;
+  padding: 2rem;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.auth-logo {
+  max-width: 120px;
+  margin-bottom: 1.5rem;
+}
+
+.auth-form {
+  width: 100%;
+}
+
+.auth-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #000;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.auth-subtitle {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.auth-error {
+  background-color: #fff5f5;
+  color: #e53e3e;
+  border-left: 4px solid #e53e3e;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.auth-fields {
+  margin-bottom: 1rem;
+}
+
+.auth-label {
+  font-size: 16px;
+  font-weight: 700;
+  color: #000;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.auth-input {
+  height: 50px;
+  border-radius: 8px;
+  border: 1px solid #999;
+  padding: 0.75rem 1rem;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  background-color: #fff;
+  color: #000;
+  font-weight: 500;
+}
+
+.auth-input:focus {
+  border-color: #3182ce;
+  box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.2);
+  background-color: #fff;
+}
+
+/* Thêm style cho placeholder */
+.auth-input::placeholder {
+  color: #333;
+  opacity: 1;
+}
+
+.input-group {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  width: 100%;
+}
+
+.auth-input-icon {
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  background-color: #f0f0f0;
+  border: 1px solid #999;
+  border-right: none;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+  color: #000;
+}
+
+.input-group .auth-input {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  flex: 1 1 auto;
+  width: 1%;
+}
+
+.auth-button {
+  height: 50px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 16px;
+  background: linear-gradient(135deg, #4776E6, #8E54E9);
+  border: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(79, 114, 205, 0.3);
+  color: #fff;
+}
+
+.auth-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 7px 14px rgba(79, 114, 205, 0.4);
+  background: linear-gradient(135deg, #3967D7, #7B46DA);
+}
+
+.auth-button:active {
+  transform: translateY(0);
+}
+
+.auth-footer {
+  text-align: center;
+  margin-top: 2rem;
+  color: #333;
+  font-size: 15px;
+}
+
+.auth-link {
+  color: #4776E6;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.auth-link:hover {
+  color: #8E54E9;
+  text-decoration: underline;
+}
+
+.auth-extra-fields {
+  margin-top: 1rem;
+}
+
+/* Custom checkbox */
+.form-check-input {
+  width: 18px;
+  height: 18px;
+  margin-top: 0.2rem;
+  cursor: pointer;
+}
+
+.form-check-input:checked {
+  background-color: #4776E6;
+  border-color: #4776E6;
+}
+
+.form-check-label {
+  padding-left: 0.5rem;
+  cursor: pointer;
+  color: #000;
+  font-weight: 500;
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+  .auth-form-container {
+    padding: 1.5rem;
+  }
+  
+  .auth-title {
+    font-size: 24px;
+  }
+  
+  .auth-subtitle {
+    font-size: 14px;
+  }
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.auth-form-container {
+  animation: fadeIn 0.5s ease-out;
+} 
