@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api';
+const API_URL = 'https://snakechatbackend.up.railway.app/api';
 
 export interface User {
   user_id?: number;

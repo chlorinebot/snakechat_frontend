@@ -18,7 +18,7 @@ import { AuthProvider, useAuth } from './contexts/AuthContext';
 import './styles/auth.css';
 
 // URL endpoint cho cập nhật trạng thái
-const API_URL = 'http://localhost:5000/api';
+const API_URL = 'https://snakechatbackend.up.railway.app/api';
 const OFFLINE_URL = `${API_URL}/user/update-status-beacon`;
 const HEARTBEAT_INTERVAL = 10000; // 10 giây
 

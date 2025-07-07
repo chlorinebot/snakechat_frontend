@@ -32,7 +32,7 @@ class SocketService {
     }
     
     // Tạo socket mới với các tùy chọn tái kết nối
-    this.socket = io('http://localhost:5000', {
+    this.socket = io('https://snakechatbackend.up.railway.app', {
       query: { userId },
       reconnection: true,
       reconnectionAttempts: this.maxReconnectAttempts,
