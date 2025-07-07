@@ -39,12 +39,25 @@ const Announcements: React.FC<AnnouncementsProps> = ({ onLogout }) => {
       const response = await api.getAnnouncements();
       if (response.success) {
         setAnnouncements(response.items);
+        setMessage(''); // Clear error message khi thành công
       } else {
-        setMessage('Không thể tải danh sách thông báo: ' + response.message);
+        setMessage('⚠️ Không thể tải danh sách thông báo: ' + response.message);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Lỗi khi tải danh sách thông báo:', error);
-      setMessage('Lỗi khi tải danh sách thông báo');
+      
+      // Hiển thị thông báo lỗi chi tiết hơn
+      if (error.response?.status === 500) {
+        setMessage('❌ Lỗi server: Có vấn đề với cơ sở dữ liệu. Vui lòng kiểm tra:\n' +
+                  '1. Kết nối database\n' +
+                  '2. Bảng GeneralAnnouncement có tồn tại không\n' +
+                  '3. Khởi động lại backend server');
+      } else if (error.code === 'NETWORK_ERROR' || error.message.includes('Network Error')) {
+        setMessage('🌐 Lỗi kết nối mạng: Không thể kết nối đến server backend. ' +
+                  'Vui lòng kiểm tra backend có đang chạy không.');
+      } else {
+        setMessage('❌ Lỗi khi tải danh sách thông báo: ' + (error.message || 'Lỗi không xác định'));
+      }
     } finally {
       setLoading(false);
     }
@@ -218,12 +231,26 @@ const Announcements: React.FC<AnnouncementsProps> = ({ onLogout }) => {
       <Container fluid className="admin-container">
         {message && (
           <Alert
-            variant="info"
+            variant={message.includes('❌') || message.includes('⚠️') ? 'danger' : 
+                   message.includes('✅') || message.includes('thành công') ? 'success' : 'info'}
             dismissible
             onClose={() => setMessage('')}
             className="my-3"
           >
-            {message}
+            <div style={{ whiteSpace: 'pre-line' }}>{message}</div>
+            {(message.includes('❌') || message.includes('⚠️')) && (
+              <div className="mt-2">
+                <Button 
+                  variant="outline-primary" 
+                  size="sm" 
+                  onClick={fetchAnnouncements}
+                  disabled={loading}
+                >
+                  <i className="fas fa-sync-alt me-1"></i>
+                  {loading ? 'Đang thử lại...' : 'Thử lại'}
+                </Button>
+              </div>
+            )}
           </Alert>
         )}
 
