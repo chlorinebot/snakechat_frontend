@@ -27,6 +27,7 @@ const Announcements: React.FC<AnnouncementsProps> = ({ onLogout }) => {
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [currentAnnouncement, setCurrentAnnouncement] = useState<Announcement | null>(null);
+  const [isOfflineMode, setIsOfflineMode] = useState<boolean>(false);
   
   // Form states
   const [content, setContent] = useState<string>('');
@@ -39,7 +40,15 @@ const Announcements: React.FC<AnnouncementsProps> = ({ onLogout }) => {
       const response = await api.getAnnouncements();
       if (response.success) {
         setAnnouncements(response.items);
-        setMessage(''); // Clear error message khi thành công
+        
+        // Hiển thị thông báo nếu đang ở chế độ offline
+        if (response.message.includes('offline') || response.message.includes('chế độ offline')) {
+          setMessage('ℹ️ ' + response.message + '\n\n🔄 Dữ liệu hiển thị có thể không phải mới nhất. Hệ thống sẽ tự động đồng bộ khi kết nối database được khôi phục.');
+          setIsOfflineMode(true);
+        } else {
+          setMessage(''); // Clear error message khi thành công
+          setIsOfflineMode(false);
+        }
       } else {
         setMessage('⚠️ Không thể tải danh sách thông báo: ' + response.message);
       }
@@ -162,16 +171,20 @@ const Announcements: React.FC<AnnouncementsProps> = ({ onLogout }) => {
       });
       
       if (response.success) {
-        setMessage('Thêm thông báo thành công và đã gửi đến tất cả người dùng');
+        if (response.message.includes('offline') || response.message.includes('chế độ offline')) {
+          setMessage('ℹ️ ' + response.message);
+        } else {
+          setMessage('✅ ' + response.message);
+        }
         fetchAnnouncements();
         setShowAddModal(false);
         resetForm();
       } else {
-        setMessage('Không thể thêm thông báo: ' + response.message);
+        setMessage('❌ Không thể thêm thông báo: ' + response.message);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Lỗi khi thêm thông báo:', error);
-      setMessage('Lỗi khi thêm thông báo');
+      setMessage('❌ Lỗi khi thêm thông báo: ' + (error.message || 'Lỗi không xác định'));
     }
   };
   
@@ -183,15 +196,19 @@ const Announcements: React.FC<AnnouncementsProps> = ({ onLogout }) => {
       const response = await api.deleteAnnouncement(currentAnnouncement.AnnouncementID);
       
       if (response.success) {
-        setMessage('Xóa thông báo thành công');
+        if (response.message.includes('offline') || response.message.includes('chế độ offline')) {
+          setMessage('ℹ️ ' + response.message);
+        } else {
+          setMessage('✅ ' + response.message);
+        }
         fetchAnnouncements();
         setShowDeleteModal(false);
       } else {
-        setMessage('Không thể xóa thông báo: ' + response.message);
+        setMessage('❌ Không thể xóa thông báo: ' + response.message);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Lỗi khi xóa thông báo:', error);
-      setMessage('Lỗi khi xóa thông báo');
+      setMessage('❌ Lỗi khi xóa thông báo: ' + (error.message || 'Lỗi không xác định'));
     }
   };
   
@@ -227,7 +244,15 @@ const Announcements: React.FC<AnnouncementsProps> = ({ onLogout }) => {
   
   return (
     <AdminLayout onLogout={onLogout}>
-      <h2 className="page-title mb-4">Quản lý thông báo chung</h2>
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <h2 className="page-title mb-0">Quản lý thông báo chung</h2>
+        {isOfflineMode && (
+          <div className="d-flex align-items-center text-warning">
+            <i className="fas fa-wifi-slash me-2"></i>
+            <span className="fw-bold">Chế độ Offline</span>
+          </div>
+        )}
+      </div>
       <Container fluid className="admin-container">
         {message && (
           <Alert
