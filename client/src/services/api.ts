@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { API_CONFIG } from '../config/api';
+import { handleApiCall } from './apiErrorHandler';
 
 const API_URL = API_CONFIG.API_URL;
 
@@ -159,32 +160,67 @@ interface SendMessageParams {
 }
 
 export const api = {
-  // Lấy danh sách users
+  // Lấy danh sách users với error handling cải thiện
   getUsers: async () => {
-    const response = await axios.get<{ items: User[] }>(`${API_URL}/user/data`);
-    return response.data.items;
+    try {
+      const result = await handleApiCall(
+        async () => {
+          const response = await axios.get<{ items: User[] }>(`${API_URL}/user/data`);
+          return response.data;
+        },
+        '/user/data',
+        3,
+        false
+      );
+      return result?.items || [];
+    } catch (error) {
+      console.error('Lỗi khi lấy danh sách users:', error);
+      return [];
+    }
   },
 
-  // Lấy thông tin người dùng theo id
+  // Lấy thông tin người dùng theo id với retry
   getUserById: async (userId: number) => {
     try {
       console.log('Gọi API getUserById với userId:', userId);
-      const response = await axios.get<{ data: User }>(`${API_URL}/user/get/${userId}`);
-      console.log('Response từ API:', response.data);
-      return response.data.data;
-    } catch (error) {
-      console.error('Lỗi khi lấy thông tin người dùng:', error);
+      
+      const result = await handleApiCall(
+        async () => {
+          const response = await axios.get<{ data: User }>(`${API_URL}/user/get/${userId}`);
+          return response.data;
+        },
+        `/user/get/${userId}`,
+        3,
+        false
+      );
+      
+      if (result?.data) {
+        console.log('Response từ API:', result);
+        return result.data;
+      }
+      
       // Thử lấy từ /user/data nếu /user/get không hoạt động
-      try {
-        const response = await axios.get<{ items: User[] }>(`${API_URL}/user/data`);
-        const users = response.data.items;
-        const user = users.find(u => u.user_id === userId);
+      console.log('Thử phương án dự phòng với /user/data');
+      const usersResult = await handleApiCall(
+        async () => {
+          const response = await axios.get<{ items: User[] }>(`${API_URL}/user/data`);
+          return response.data;
+        },
+        '/user/data',
+        3,
+        false
+      );
+      
+      if (usersResult?.items) {
+        const user = usersResult.items.find((u: User) => u.user_id === userId);
         console.log('Tìm thấy user từ /user/data:', user);
         return user || null;
-      } catch (fallbackError) {
-        console.error('Lỗi khi thử phương án dự phòng:', fallbackError);
-        return null;
       }
+      
+      return null;
+    } catch (error) {
+      console.error('Lỗi khi lấy thông tin người dùng:', error);
+      return null;
     }
   },
 
@@ -295,26 +331,38 @@ export const api = {
     }
   },
 
-  // Lấy danh sách bạn bè
+  // Lấy danh sách bạn bè với error handling
   getFriends: async (userId: number) => {
     try {
-      const response = await axios.get<{ items: any[] }>(`${API_URL}/friendship/friends/${userId}`);
+      const result = await handleApiCall(
+        async () => {
+          const response = await axios.get<{ items: any[] }>(`${API_URL}/friendship/friends/${userId}`);
+          return response.data;
+        },
+        `/friendship/friends/${userId}`,
+        3,
+        false
+      );
       
-      // Kiểm tra và log trạng thái của từng người bạn
-      const friends = response.data.items.map(friend => {
-        const normalizedStatus = friend.status?.toLowerCase();
+      if (result?.items) {
+        // Kiểm tra và log trạng thái của từng người bạn
+        const friends = result.items.map(friend => {
+          const normalizedStatus = friend.status?.toLowerCase();
+          
+          // Xử lý trạng thái - đảm bảo luôn trả về chuỗi "online" hoặc "offline" 
+          if (!normalizedStatus || (normalizedStatus !== 'online' && normalizedStatus !== 'offline')) {
+            friend.status = 'offline';
+          } else {
+            // Chuẩn hóa trạng thái
+            friend.status = normalizedStatus;
+          }
+          return friend;
+        });
         
-        // Xử lý trạng thái - đảm bảo luôn trả về chuỗi "online" hoặc "offline" 
-        if (!normalizedStatus || (normalizedStatus !== 'online' && normalizedStatus !== 'offline')) {
-          friend.status = 'offline';
-        } else {
-          // Chuẩn hóa trạng thái
-          friend.status = normalizedStatus;
-        }
-        return friend;
-      });
+        return friends;
+      }
       
-      return friends;
+      return [];
     } catch (error) {
       console.error('Lỗi khi lấy danh sách bạn bè:', error);
       return [];
@@ -591,12 +639,25 @@ export const api = {
     }
   },
 
-  // Tìm kiếm người dùng theo tên hoặc email
+  // Tìm kiếm người dùng với error handling
   searchUsers: async (searchTerm: string) => {
     try {
       // Lấy tất cả người dùng
-      const response = await axios.get<{ items: User[] }>(`${API_URL}/user/data`);
-      const users = response.data.items;
+      const result = await handleApiCall(
+        async () => {
+          const response = await axios.get<{ items: User[] }>(`${API_URL}/user/data`);
+          return response.data;
+        },
+        '/user/data',
+        3,
+        false
+      );
+      
+      if (!result?.items) {
+        return [];
+      }
+      
+      const users = result.items;
       
       // Lọc người dùng theo tên hoặc email
       if (!searchTerm) return [];
@@ -667,13 +728,20 @@ export const api = {
 
   // PHẦN QUẢN LÝ TIN NHẮN
 
-  // Lấy danh sách cuộc trò chuyện của người dùng
+  // Lấy danh sách cuộc trò chuyện với error handling
   getUserConversations: async (userId: number) => {
     try {
-      const response = await axios.get<{ items: Conversation[] }>(
-        `${API_URL}/conversations/user/${userId}`
+      const result = await handleApiCall(
+        async () => {
+          const response = await axios.get<{ items: Conversation[] }>(`${API_URL}/conversations/user/${userId}`);
+          return response.data;
+        },
+        `/conversations/user/${userId}`,
+        3,
+        false
       );
-      return response.data.items;
+      
+      return result?.items || [];
     } catch (error) {
       console.error('Lỗi khi lấy danh sách cuộc trò chuyện:', error);
       return [];
@@ -707,13 +775,20 @@ export const api = {
     }
   },
 
-  // Lấy tin nhắn trong cuộc trò chuyện
+  // Lấy tin nhắn trong cuộc trò chuyện với error handling
   getConversationMessages: async (conversationId: number) => {
     try {
-      const response = await axios.get<{ items: Message[] }>(
-        `${API_URL}/messages/conversation/${conversationId}`
+      const result = await handleApiCall(
+        async () => {
+          const response = await axios.get<{ items: Message[] }>(`${API_URL}/messages/conversation/${conversationId}`);
+          return response.data;
+        },
+        `/messages/conversation/${conversationId}`,
+        3,
+        false
       );
-      return response.data.items;
+      
+      return result?.items || [];
     } catch (error) {
       console.error('Lỗi khi lấy tin nhắn trong cuộc trò chuyện:', error);
       return [];

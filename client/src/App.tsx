@@ -8,6 +8,8 @@ import Roles from './pages/admin/Roles';
 import LockedAccounts from './pages/admin/LockedAccounts';
 import HomePage from './pages/home_user/HomePage';
 import AccountLockGuard from './components/common/AccountLockGuard';
+import DebugPanel from './components/debug/DebugPanel';
+import TestConnection from './components/debug/TestConnection';
 import api from './services/api';
 import socketService from './services/socketService';
 import Reports from './pages/admin/Reports';
@@ -30,6 +32,7 @@ const LoginPage: React.FC = () => {
 };
 
 const App: React.FC = () => {
+  const [showTestConnection, setShowTestConnection] = useState(false);
   // Kiểm tra authentication và role từ localStorage
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(localStorage.getItem('token') !== null);
   const [user, setUser] = useState<any>(JSON.parse(localStorage.getItem('user') || '{}'));
@@ -708,6 +711,38 @@ const App: React.FC = () => {
     <AuthProvider>
       <Router>
         <ToastContainer />
+        {/* Add DebugPanel for API debugging */}
+        <DebugPanel />
+        
+        {/* Test Connection Component - chỉ hiển thị trong development */}
+        {process.env.NODE_ENV === 'development' && (
+          <div className="fixed bottom-4 right-4 z-50">
+            <button
+              onClick={() => setShowTestConnection(!showTestConnection)}
+              className="bg-purple-600 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-purple-700 text-sm"
+            >
+              {showTestConnection ? 'Ẩn Test' : '🔧 Test API'}
+            </button>
+          </div>
+        )}
+        
+        {showTestConnection && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+            <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-auto">
+              <div className="p-4 border-b flex justify-between items-center">
+                <h2 className="text-xl font-bold">Test Kết Nối API</h2>
+                <button
+                  onClick={() => setShowTestConnection(false)}
+                  className="text-gray-500 hover:text-gray-700 text-xl"
+                >
+                  ×
+                </button>
+              </div>
+              <TestConnection />
+            </div>
+          </div>
+        )}
+
         <Routes>
           <Route path="/login" element={!isAuthenticated ? <LoginPage /> : (isAdmin ? <Navigate to="/dashboard" /> : <Navigate to="/" />)} />
           
