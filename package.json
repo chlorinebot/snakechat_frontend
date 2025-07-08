@@ -2,11 +2,11 @@
   "scripts": {
     "dev": "cd client && npm run dev",
     "build": "cd client && npm run build",
-    "start": "npm run build && node server.js",
+    "start": "node server.js",
     "start:dev": "cd client && npm run dev",
     "lint": "cd client && npm run lint",
     "preview": "cd client && npm run preview",
-    "install": "cd client && npm install"
+    "postinstall": "cd client && npm install"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^2.2.0",
