@@ -3,6 +3,7 @@ import api from '../../services/api';
 import type { Conversation, Message } from '../../services/api';
 import EmojiPicker from 'emoji-picker-react';
 import type { EmojiClickData } from 'emoji-picker-react';
+import socketService from '../../services/socketService';
 
 // Tự viết hàm throttle để thay thế lodash/throttle
 const throttle = <T extends (...args: any[]) => any>(func: T, delay: number): T => {
@@ -573,6 +574,104 @@ const MessagesContent: React.FC<MessagesContentProps> = ({ userId, currentConver
     
     loadMessages();
   }, [currentConversation, scrollToBottom]);
+
+  // Socket listener cho tin nhắn mới - REALTIME MESSAGING
+  useEffect(() => {
+    if (!currentConversation?.conversation_id || !userId) return;
+
+    const handleNewMessage = (data: any) => {
+      // Chỉ xử lý tin nhắn của cuộc trò chuyện hiện tại
+      if (data.conversation_id === currentConversation.conversation_id) {
+        // Kiểm tra xem tin nhắn đã tồn tại chưa để tránh duplicate
+        setMessages(prevMessages => {
+          const exists = prevMessages.some(msg => msg.message_id === data.message_id);
+          if (exists) {
+            return prevMessages;
+          }
+          
+          // Thêm tin nhắn mới vào cuối danh sách
+          const newMessages = [...prevMessages, data];
+          
+          // Auto scroll to bottom nếu người dùng đang ở cuối danh sách
+          setTimeout(() => {
+            if (messagesContainerRef.current) {
+              const { scrollTop, scrollHeight, clientHeight } = messagesContainerRef.current;
+              const isNearBottom = scrollHeight - scrollTop - clientHeight < 100;
+              
+              if (isNearBottom || data.sender_id === userId) {
+                scrollToBottom(true);
+              }
+            }
+          }, 100);
+          
+          return newMessages;
+        });
+      }
+    };
+
+    const handleMessageReadReceipt = (data: any) => {
+      // Xử lý thông báo tin nhắn đã đọc
+      if (data.conversation_id === currentConversation.conversation_id) {
+        setMessages(prevMessages => 
+          prevMessages.map(msg => {
+            // Nếu có danh sách message_ids cụ thể
+            if (data.message_ids && Array.isArray(data.message_ids)) {
+              if (data.message_ids.includes(msg.message_id)) {
+                return { ...msg, is_read: 1 };
+              }
+            } else {
+              // Đánh dấu đã đọc cho tất cả tin nhắn trước thời điểm read_at
+              const messageTime = new Date(msg.created_at);
+              const readTime = new Date(data.read_at);
+              
+              if (messageTime <= readTime && msg.sender_id === userId) {
+                return { ...msg, is_read: 1 };
+              }
+            }
+            return msg;
+          })
+        );
+      }
+    };
+
+    // Đăng ký socket events
+    socketService.on('new_message', handleNewMessage);
+    socketService.on('message_read_receipt', handleMessageReadReceipt);
+
+    // Cleanup function
+    return () => {
+      socketService.off('new_message', handleNewMessage);
+      socketService.off('message_read_receipt', handleMessageReadReceipt);
+    };
+  }, [currentConversation?.conversation_id, userId, scrollToBottom]);
+
+  // Gửi thông báo đã đọc tin nhắn khi vào cuộc trò chuyện
+  useEffect(() => {
+    if (!currentConversation?.conversation_id || !userId || messages.length === 0) return;
+
+    // Đánh dấu đã đọc các tin nhắn chưa đọc của người khác
+    const unreadMessages = messages.filter(msg => 
+      msg.sender_id !== userId && msg.is_read === 0
+    );
+
+    if (unreadMessages.length > 0) {
+      // Gửi thông báo đã đọc qua socket
+      socketService.emit('message_read', {
+        conversation_id: currentConversation.conversation_id,
+        reader_id: userId,
+        message_ids: unreadMessages.map(msg => msg.message_id)
+      });
+
+      // Cập nhật local state
+      setMessages(prevMessages => 
+        prevMessages.map(msg => 
+          unreadMessages.some(unread => unread.message_id === msg.message_id)
+            ? { ...msg, is_read: 1 }
+            : msg
+        )
+      );
+    }
+  }, [currentConversation?.conversation_id, userId, messages]);
 
   // Nếu không có cuộc trò chuyện nào được chọn
   if (!currentConversation) {

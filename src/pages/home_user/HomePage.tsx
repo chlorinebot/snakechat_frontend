@@ -497,9 +497,13 @@ const HomePage: React.FC<UserProps> = ({ onLogout }) => {
           processedMessageIds.delete(messageKey);
         }, 5000);
         
+        // Phát âm thanh nếu không phải tin nhắn của mình
         if (data.sender_id !== user?.user_id) {
           playSound('message');
         }
+
+        // Refresh conversations để cập nhật unread count và last message
+        refreshConversations();
       }
     };
     
@@ -512,7 +516,23 @@ const HomePage: React.FC<UserProps> = ({ onLogout }) => {
         socketService.off('new_message', handleNewMessage);
       }
     };
-  }, [user, currentConversation, activeTab]);
+  }, [user, refreshConversations]);
+
+  // Monitor socket connection status
+  useEffect(() => {
+    if (!user?.user_id) return;
+
+    const checkConnection = setInterval(() => {
+      if (!socketService.isConnected()) {
+        console.log('[HOMEPAGE] Socket disconnected, attempting to reconnect...');
+        socketService.connect(user.user_id);
+      }
+    }, 15000); // Check every 15 seconds
+
+    return () => {
+      clearInterval(checkConnection);
+    };
+  }, [user?.user_id]);
 
   useEffect(() => {
     const handleSwitchToMessagesTab = () => {
