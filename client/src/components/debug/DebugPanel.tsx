@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { API_CONFIG } from '../../config/api';
 import axios from 'axios';
+import { useAuth } from '../../contexts/AuthContext';
 
 interface EndpointStatus {
   endpoint: string;
@@ -11,6 +12,7 @@ interface EndpointStatus {
 }
 
 const DebugPanel: React.FC = () => {
+  const { isAdmin } = useAuth();
   const [endpointStatuses, setEndpointStatuses] = useState<EndpointStatus[]>([]);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -101,6 +103,11 @@ const DebugPanel: React.FC = () => {
       default: return '❓';
     }
   };
+
+  // Chỉ hiển thị component nếu người dùng là admin (role_id === 1)
+  if (!isAdmin) {
+    return null;
+  }
 
   if (!isVisible) {
     return (
