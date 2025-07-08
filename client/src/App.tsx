@@ -16,21 +16,17 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import './styles/auth.css';
+import { API_CONFIG } from './config/api';
 
-// URL endpoint cho cập nhật trạng thái
-const API_URL = 'http://localhost:5000/api';
+const API_URL = API_CONFIG.API_URL;
 const OFFLINE_URL = `${API_URL}/user/update-status-beacon`;
 const HEARTBEAT_INTERVAL = 10000; // 10 giây
 
-// Tạo component LoginPage để sử dụng AuthContext
+// Component for login page
 const LoginPage: React.FC = () => {
   const { login } = useAuth();
   
-  const handleLoginSuccess = (token: string, userData: any) => {
-    login(token, userData);
-  };
-  
-  return <Login onLoginSuccess={handleLoginSuccess} />;
+  return <Login />;
 };
 
 const App: React.FC = () => {

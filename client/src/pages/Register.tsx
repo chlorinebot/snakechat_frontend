@@ -1,41 +1,78 @@
 import React, { useState } from 'react';
-import { Container, Row, Col, Card } from 'react-bootstrap';
-import UserForm from '../components/admin/UserForm';
+import { Link, useNavigate } from 'react-router-dom';
+import { Container, Form, Button, Alert, Spinner } from 'react-bootstrap';
+import { toast } from 'react-toastify';
+import { getApiUrl } from '../config/api';
+
+interface RegisterData {
+  username: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
+
+interface RegisterResponse {
+  success: boolean;
+  message: string;
+  user?: any;
+}
 
 const Register: React.FC = () => {
+  const [formData, setFormData] = useState<RegisterData>({
+    username: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+  });
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
-  const handleSubmit = async (data: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+    setError('');
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError('');
+
+    // Validate passwords match
+    if (formData.password !== formData.confirmPassword) {
+      setError('Mật khẩu xác nhận không khớp');
+      setIsLoading(false);
+      return;
+    }
+
     try {
-      if (data.password !== data.confirmPassword) {
-        setError('Mật khẩu xác nhận không khớp');
-        return;
-      }
-
-      const userData = {
-        ...data,
-        role_id: 2,
-        confirmPassword: undefined
-      };
-
-      const response = await fetch('http://localhost:5000/api/auth/register', {
+      const response = await fetch(getApiUrl('/auth/register'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(userData),
+        body: JSON.stringify({
+          username: formData.username,
+          email: formData.email,
+          password: formData.password
+        }),
       });
 
-      const result = await response.json();
+      const data: RegisterResponse = await response.json();
       
-      if (result.success) {
-        alert('Đăng ký thành công!');
-        window.location.href = '/login';
+      if (data.success) {
+        toast.success('Đăng ký thành công!');
+        navigate('/login');
       } else {
-        setError(result.message || 'Đăng ký thất bại');
+        setError(data.message || 'Đăng ký thất bại');
       }
-    } catch (error) {
+    } catch (err) {
       setError('Đăng ký thất bại. Vui lòng thử lại sau.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -82,44 +119,66 @@ const Register: React.FC = () => {
       <div className="auth-background"></div>
       <div className="light-effect light-effect-1"></div>
       <div className="light-effect light-effect-2"></div>
-      <Row className="justify-content-center w-100">
-        <Col xs={12} sm={10} md={8} lg={6} xl={4}>
-          <Card className="border-0 bg-transparent">
-            <Card.Body className="p-0">
+      <Container className="d-flex align-items-center justify-content-center">
+        <div className="col-md-8 col-lg-6 col-xl-5">
+          <div className="card border-0 bg-transparent">
+            <div className="card-body p-0">
               <div className="dark-text-form">
-                <UserForm
-                  title="Đăng ký"
-                  subtitle="Tạo tài khoản mới"
-                  fields={registerFields}
-                  onSubmit={handleSubmit}
-                  error={error}
-                  buttonText="Đăng ký"
-                  footerText="Đã có tài khoản?"
-                  footerLink={{
-                    text: "Đăng nhập",
-                    to: "/login"
-                  }}
-                  formLogo="/logo.png"
-                  extraFields={
-                    <div className="form-check mb-4">
-                      <input
-                        className="form-check-input"
-                        type="checkbox"
-                        id="agreeTerms"
+                <Form onSubmit={handleSubmit}>
+                  <h3 className="text-center mb-4">Đăng ký</h3>
+                  <p className="text-center mb-4">Tạo tài khoản mới</p>
+
+                  {error && <Alert variant="danger" className="mb-4">{error}</Alert>}
+
+                  {registerFields.map((field) => (
+                    <Form.Group key={field.name} className="mb-3">
+                      <Form.Label className="form-label">
+                        <i className={field.icon}></i> {field.label}
+                      </Form.Label>
+                      <Form.Control
+                        type={field.type}
+                        name={field.name}
+                        placeholder={field.placeholder}
+                        onChange={handleChange}
                         required
                       />
-                      <label className="form-check-label small" htmlFor="agreeTerms" style={{color: "#000", fontWeight: "bold"}}>
-                        Tôi đồng ý với <a href="#" className="auth-link" style={{fontWeight: "bold"}}>điều khoản sử dụng</a> và{' '}
-                        <a href="#" className="auth-link" style={{fontWeight: "bold"}}>chính sách bảo mật</a>
-                      </label>
-                    </div>
-                  }
-                />
+                    </Form.Group>
+                  ))}
+
+                  <Button
+                    type="submit"
+                    className="w-100"
+                    disabled={isLoading}
+                  >
+                    {isLoading ? (
+                      <>
+                        <Spinner
+                          as="span"
+                          animation="border"
+                          size="sm"
+                          className="me-2"
+                        />
+                        Đang đăng ký...
+                      </>
+                    ) : (
+                      'Đăng ký'
+                    )}
+                  </Button>
+
+                  <div className="text-center mt-4">
+                    <p>
+                      Đã có tài khoản?{' '}
+                      <Link to="/login" className="auth-link">
+                        Đăng nhập
+                      </Link>
+                    </p>
+                  </div>
+                </Form>
               </div>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
+            </div>
+          </div>
+        </div>
+      </Container>
     </Container>
   );
 };

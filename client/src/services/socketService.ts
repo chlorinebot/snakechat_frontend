@@ -1,4 +1,21 @@
 import { io, Socket } from 'socket.io-client';
+import { getSocketUrl } from '../config/api';
+
+interface User {
+  id: number;
+  username: string;
+  email: string;
+  created_at: string;
+}
+
+interface Message {
+  id: number;
+  room_id: number;
+  user_id: number;
+  message: string;
+  timestamp: string;
+  user: User;
+}
 
 class SocketService {
   private socket: Socket | null = null;
@@ -31,8 +48,10 @@ class SocketService {
       this.socket.disconnect();
     }
     
+    console.log('Connecting to socket server:', getSocketUrl());
+    
     // Tạo socket mới với các tùy chọn tái kết nối
-    this.socket = io('http://localhost:5000', {
+    this.socket = io(getSocketUrl(), {
       query: { userId },
       reconnection: true,
       reconnectionAttempts: this.maxReconnectAttempts,
@@ -51,6 +70,7 @@ class SocketService {
     if (!this.socket) return;
 
     this.socket.on('connect', () => {
+      console.log('[SOCKET-SERVICE] Socket connected to:', getSocketUrl());
       // Đặt lại số lần thử kết nối
       this.reconnectAttempts = 0;
       
@@ -64,6 +84,7 @@ class SocketService {
     });
 
     this.socket.on('disconnect', (reason) => {
+      console.log('[SOCKET-SERVICE] Socket disconnected:', reason);
       // Nếu không phải do người dùng chủ động ngắt kết nối, thử kết nối lại
       if (reason !== 'io client disconnect') {
         this.handleReconnect();
@@ -74,6 +95,8 @@ class SocketService {
   private handleReconnect(): void {
     // Tăng số lần thử kết nối
     this.reconnectAttempts++;
+    
+    console.log(`[SOCKET-SERVICE] Reconnecting... Attempt ${this.reconnectAttempts}/${this.maxReconnectAttempts}`);
     
     // Nếu chưa vượt quá số lần thử tối đa, thử kết nối lại
     if (this.reconnectAttempts <= this.maxReconnectAttempts && this.userId) {
@@ -145,6 +168,7 @@ class SocketService {
     if (this.socket && this.socket.connected) {
       this.socket.emit(event, data);
     } else {
+      console.warn('[SOCKET-SERVICE] Socket not connected, attempting to reconnect...');
       // Thử kết nối lại nếu có userId
       if (this.userId) {
         this.connect(this.userId);

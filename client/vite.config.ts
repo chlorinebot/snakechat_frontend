@@ -8,9 +8,10 @@ export default defineConfig({
     port: parseInt(process.env.PORT || '5173'), // Use Railway's PORT or default 5173
     proxy: {
       '/api': {
-        target: process.env.VITE_API_URL || 'http://localhost:5000',
+        target: process.env.VITE_API_URL || 'https://snakechatbackend.up.railway.app',
         changeOrigin: true,
-        secure: false,
+        secure: true,
+        rewrite: (path) => path.replace(/^\/api/, '/api'),
       },
     },
   },
