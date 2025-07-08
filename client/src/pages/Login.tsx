@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Container, Form, Button, Alert, Spinner } from 'react-bootstrap';
 import { toast } from 'react-toastify';
@@ -26,6 +26,16 @@ const Login: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
+
+  // Xóa class account-locked khi vào trang đăng nhập
+  useEffect(() => {
+    document.body.classList.remove('account-locked');
+    
+    // Cleanup khi component unmount
+    return () => {
+      // Có thể giữ lại hoặc xóa tùy theo logic ứng dụng
+    };
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({

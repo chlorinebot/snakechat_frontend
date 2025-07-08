@@ -8,7 +8,7 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     <style>
-      /* Style for account locked statee */
+      /* Style for account locked state */
       body.account-locked {
         pointer-events: none !important;
         overflow: hidden !important;
@@ -18,6 +18,24 @@
       body.account-locked .Toastify__toast-container {
         pointer-events: auto !important;
         z-index: 9999 !important;
+      }
+      
+      /* Cho phép tương tác trên trang đăng nhập và đăng ký */
+      body.account-locked .dark-text-form,
+      body.account-locked .dark-text-form *,
+      body.account-locked form,
+      body.account-locked form *,
+      body.account-locked .bg-auth,
+      body.account-locked .bg-auth * {
+        pointer-events: auto !important;
+      }
+      
+      /* Đảm bảo các link đăng nhập/đăng ký hoạt động */
+      body.account-locked a[href="/login"],
+      body.account-locked a[href="/register"],
+      body.account-locked a[href*="login"],
+      body.account-locked a[href*="register"] {
+        pointer-events: auto !important;
       }
     </style>
   </head>

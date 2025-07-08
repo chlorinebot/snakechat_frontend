@@ -166,9 +166,18 @@ select::placeholder {
   opacity: 1 !important;
 }
 
-/* Lớp bao bọc form với văn bản màu đen */
+/* Đảm bảo form và các input có thể tương tác được */
 .dark-text-form {
+  position: relative;
+  z-index: 10 !important;
   color: #000;
+  pointer-events: auto !important;
+}
+
+.dark-text-form * {
+  position: relative;
+  z-index: 11 !important;
+  pointer-events: auto !important;
 }
 
 .dark-text-form label {
@@ -178,10 +187,22 @@ select::placeholder {
 
 .dark-text-form input,
 .dark-text-form select,
-.dark-text-form textarea {
+.dark-text-form textarea,
+.dark-text-form button,
+.dark-text-form .btn,
+.dark-text-form .form-control {
   color: #000 !important;
   font-weight: 500 !important;
   border-color: #666 !important;
+  position: relative !important;
+  z-index: 12 !important;
+  pointer-events: auto !important;
+  cursor: pointer !important;
+}
+
+.dark-text-form .btn:not(:disabled) {
+  cursor: pointer !important;
+  pointer-events: auto !important;
 }
 
 .dark-text-form input::placeholder,
