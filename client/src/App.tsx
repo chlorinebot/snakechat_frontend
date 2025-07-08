@@ -723,21 +723,21 @@ const App: React.FC = () => {
           <>
             <button
               onClick={() => setShowTestConnection(!showTestConnection)}
-              className="fixed bottom-20 right-4 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 z-50"
+              className="fixed top-4 right-16 bg-blue-600 text-white p-2 rounded-lg shadow-lg hover:bg-blue-700 z-50 text-sm"
               title="Test API Connection"
             >
               🔧 Test API
             </button>
             <button
               onClick={() => setShowNetworkTest(!showNetworkTest)}
-              className="fixed bottom-32 right-4 bg-purple-600 text-white p-3 rounded-full shadow-lg hover:bg-purple-700 z-50"
+              className="fixed top-4 right-32 bg-purple-600 text-white p-2 rounded-lg shadow-lg hover:bg-purple-700 z-50 text-sm"
               title="Network Test"
             >
               🌐 Network
             </button>
             <button
               onClick={() => setShowBackendStatus(!showBackendStatus)}
-              className="fixed bottom-44 right-4 bg-green-600 text-white p-3 rounded-full shadow-lg hover:bg-green-700 z-50"
+              className="fixed top-4 right-4 bg-green-600 text-white p-2 rounded-lg shadow-lg hover:bg-green-700 z-50 text-sm"
               title="Backend Status"
             >
               🚂 Backend
