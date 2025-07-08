@@ -10,6 +10,8 @@ import HomePage from './pages/home_user/HomePage';
 import AccountLockGuard from './components/common/AccountLockGuard';
 import DebugPanel from './components/debug/DebugPanel';
 import TestConnection from './components/debug/TestConnection';
+import NetworkTest from './components/debug/NetworkTest';
+import BackendStatus from './components/debug/BackendStatus';
 import api from './services/api';
 import socketService from './services/socketService';
 import Reports from './pages/admin/Reports';
@@ -33,6 +35,8 @@ const LoginPage: React.FC = () => {
 
 const App: React.FC = () => {
   const [showTestConnection, setShowTestConnection] = useState(false);
+  const [showNetworkTest, setShowNetworkTest] = useState(false);
+  const [showBackendStatus, setShowBackendStatus] = useState(false);
   // Kiểm tra authentication và role từ localStorage
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(localStorage.getItem('token') !== null);
   const [user, setUser] = useState<any>(JSON.parse(localStorage.getItem('user') || '{}'));
@@ -716,14 +720,29 @@ const App: React.FC = () => {
         
         {/* Test Connection Component - chỉ hiển thị trong development */}
         {process.env.NODE_ENV === 'development' && (
-          <div className="fixed bottom-4 right-4 z-50">
+          <>
             <button
               onClick={() => setShowTestConnection(!showTestConnection)}
-              className="bg-purple-600 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-purple-700 text-sm"
+              className="fixed bottom-20 right-4 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 z-50"
+              title="Test API Connection"
             >
-              {showTestConnection ? 'Ẩn Test' : '🔧 Test API'}
+              🔧 Test API
             </button>
-          </div>
+            <button
+              onClick={() => setShowNetworkTest(!showNetworkTest)}
+              className="fixed bottom-32 right-4 bg-purple-600 text-white p-3 rounded-full shadow-lg hover:bg-purple-700 z-50"
+              title="Network Test"
+            >
+              🌐 Network
+            </button>
+            <button
+              onClick={() => setShowBackendStatus(!showBackendStatus)}
+              className="fixed bottom-44 right-4 bg-green-600 text-white p-3 rounded-full shadow-lg hover:bg-green-700 z-50"
+              title="Backend Status"
+            >
+              🚂 Backend
+            </button>
+          </>
         )}
         
         {showTestConnection && (
@@ -739,6 +758,40 @@ const App: React.FC = () => {
                 </button>
               </div>
               <TestConnection />
+            </div>
+          </div>
+        )}
+
+        {showNetworkTest && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+            <div className="bg-white rounded-lg max-w-7xl w-full max-h-[95vh] overflow-auto">
+              <div className="p-4 border-b flex justify-between items-center">
+                <h2 className="text-xl font-bold">Network & Backend Test</h2>
+                <button
+                  onClick={() => setShowNetworkTest(false)}
+                  className="text-gray-500 hover:text-gray-700 text-xl"
+                >
+                  ×
+                </button>
+              </div>
+              <NetworkTest />
+            </div>
+          </div>
+        )}
+
+        {showBackendStatus && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white p-6 rounded-lg shadow-lg max-w-6xl max-h-[90vh] overflow-y-auto w-full mx-4">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-xl font-bold">🚂 Backend Status Dashboard</h3>
+                <button
+                  onClick={() => setShowBackendStatus(false)}
+                  className="text-gray-500 hover:text-gray-700"
+                >
+                  ✕
+                </button>
+              </div>
+              <BackendStatus />
             </div>
           </div>
         )}
