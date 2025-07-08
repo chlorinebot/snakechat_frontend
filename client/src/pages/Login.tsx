@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Container, Form, Button, Alert, Spinner } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { getApiUrl } from '../config/api';
+import { useAuth } from '../contexts/AuthContext';
 
 interface LoginResponse {
   success: boolean;
@@ -19,8 +20,9 @@ interface LoginResponse {
 }
 
 const Login: React.FC = () => {
+  const { login } = useAuth();
   const [formData, setFormData] = useState({
-    email: '',
+    identity: '',
     password: ''
   });
   const [isLoading, setIsLoading] = useState(false);
@@ -65,7 +67,13 @@ const Login: React.FC = () => {
         console.log('Thông tin người dùng từ server:', data.user);
         
         // Đảm bảo dữ liệu người dùng có user_id
-        const userData = { ...data.user };
+        const userData = { 
+          username: data.user?.username || '',
+          email: data.user?.email || '',
+          password: '', // Password rỗng để thỏa mãn interface
+          role_id: data.user?.role_id || 2,
+          ...data.user
+        };
         if (!userData.user_id && userData.id) {
           console.log('Chuyển đổi id thành user_id cho tương thích với client');
           userData.user_id = userData.id;
@@ -88,32 +96,27 @@ const Login: React.FC = () => {
           console.error('Lỗi kiểm tra trạng thái khóa:', lockCheckError);
         }
         
-        // Lưu token và thông tin người dùng vào localStorage
-        localStorage.setItem('token', data.token || '');
-        localStorage.setItem('user', JSON.stringify(userData));
+        // Lưu token và thông tin người dùng vào AuthContext
+        const token = data.token || '';
+        login(token, userData);
         
-        // Cập nhật trạng thái online cho người dùng
-        if (userId) {
-          try {
-            // Assuming api.updateStatus is available globally or imported
-            // For now, we'll just log the action
-            // await api.updateStatus(userId, 'online');
-            console.log('Đã cập nhật trạng thái online cho user ID:', userId);
-          } catch (err) {
-            console.error('Lỗi khi cập nhật trạng thái online:', err);
+        // Thêm delay ngắn để AuthContext cập nhật xong
+        setTimeout(() => {
+          // Điều hướng dựa vào role_id
+          console.log('Thông tin userData cho điều hướng:', userData);
+          if (userData.role_id === 1) {
+            // Nếu là admin (role_id = 1)
+            console.log('Điều hướng đến admin dashboard');
+            window.location.href = '/dashboard';
+          } else if (userData.role_id === 2) {
+            // Nếu là người dùng thường (role_id = 2)
+            console.log('Điều hướng đến trang chủ user');
+            window.location.href = '/';
+          } else {
+            console.warn('Role ID không xác định:', userData.role_id);
+            window.location.href = '/';
           }
-        } else {
-          console.error('Không tìm thấy user_id hoặc id trong dữ liệu đăng nhập:', userData);
-        }
-        
-        // Điều hướng dựa vào role_id
-        if (userData.role === 'admin') {
-          // Nếu là admin (role_id = 1)
-          navigate('/admin/dashboard');
-        } else {
-          // Nếu là người dùng thường (role_id = 2)
-          navigate('/');
-        }
+        }, 100);
       } else {
         setError(data.message || 'Thông tin đăng nhập không chính xác');
       }
@@ -127,7 +130,7 @@ const Login: React.FC = () => {
 
   const loginFields = [
     {
-      name: 'email',
+      name: 'identity',
       label: 'Email hoặc tên đăng nhập',
       type: 'text',
       placeholder: 'Nhập email hoặc tên đăng nhập',
@@ -156,8 +159,8 @@ const Login: React.FC = () => {
             <Form.Label>Email hoặc tên đăng nhập</Form.Label>
             <Form.Control
               type="text"
-              name="email"
-              value={formData.email}
+              name="identity"
+              value={formData.identity}
               onChange={handleChange}
               placeholder="Nhập email hoặc tên đăng nhập"
               className="form-control-lg"
