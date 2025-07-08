@@ -704,10 +704,17 @@ export const api = {
   // Lấy tin nhắn trong cuộc trò chuyện
   getConversationMessages: async (conversationId: number) => {
     try {
-      const response = await axios.get<{ items: Message[] }>(
+      const response = await axios.get<{ items: any[] }>(
         `${API_URL}/messages/conversation/${conversationId}`
       );
-      return response.data.items;
+      
+      // Convert is_read từ number (0/1) sang boolean (false/true)
+      const messages: Message[] = response.data.items.map((item: any) => ({
+        ...item,
+        is_read: Boolean(item.is_read)
+      }));
+      
+      return messages;
     } catch (error) {
       console.error('Lỗi khi lấy tin nhắn trong cuộc trò chuyện:', error);
       return [];
@@ -723,12 +730,18 @@ export const api = {
       try {
         attempts++;
         
-        const response = await axios.post<{ success: boolean; data: Message }>(
+        const response = await axios.post<{ success: boolean; data: any }>(
           `${API_URL}/messages/send`,
           params
         );
         
-        return { success: true, data: response.data.data };
+        // Convert is_read từ number sang boolean trong response data
+        const messageData: Message = {
+          ...response.data.data,
+          is_read: Boolean(response.data.data.is_read)
+        };
+        
+        return { success: true, data: messageData };
       } catch (error: any) {
         console.error(`[API] Lỗi khi gửi tin nhắn (lần ${attempts}):`, error);
         

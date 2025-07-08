@@ -617,7 +617,7 @@ const MessagesContent: React.FC<MessagesContentProps> = ({ userId, currentConver
             // Nếu có danh sách message_ids cụ thể
             if (data.message_ids && Array.isArray(data.message_ids)) {
               if (data.message_ids.includes(msg.message_id)) {
-                return { ...msg, is_read: 1 };
+                return { ...msg, is_read: true };
               }
             } else {
               // Đánh dấu đã đọc cho tất cả tin nhắn trước thời điểm read_at
@@ -625,7 +625,7 @@ const MessagesContent: React.FC<MessagesContentProps> = ({ userId, currentConver
               const readTime = new Date(data.read_at);
               
               if (messageTime <= readTime && msg.sender_id === userId) {
-                return { ...msg, is_read: 1 };
+                return { ...msg, is_read: true };
               }
             }
             return msg;
@@ -651,7 +651,7 @@ const MessagesContent: React.FC<MessagesContentProps> = ({ userId, currentConver
 
     // Đánh dấu đã đọc các tin nhắn chưa đọc của người khác
     const unreadMessages = messages.filter(msg => 
-      msg.sender_id !== userId && msg.is_read === 0
+      msg.sender_id !== userId && msg.is_read === false
     );
 
     if (unreadMessages.length > 0) {
@@ -661,12 +661,11 @@ const MessagesContent: React.FC<MessagesContentProps> = ({ userId, currentConver
         reader_id: userId,
         message_ids: unreadMessages.map(msg => msg.message_id)
       });
-
       // Cập nhật local state
       setMessages(prevMessages => 
         prevMessages.map(msg => 
           unreadMessages.some(unread => unread.message_id === msg.message_id)
-            ? { ...msg, is_read: 1 }
+            ? { ...msg, is_read: true }
             : msg
         )
       );
