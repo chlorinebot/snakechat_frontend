@@ -2,6 +2,8 @@
   "scripts": {
     "dev": "cd client && npm run dev",
     "build": "cd client && npm run build",
+    "start": "npm run build && node server.js",
+    "start:dev": "cd client && npm run dev",
     "lint": "cd client && npm run lint",
     "preview": "cd client && npm run preview",
     "install": "cd client && npm install"
@@ -11,6 +13,8 @@
     "@types/lodash": "^4.17.17",
     "date-fns": "^4.1.0",
     "lodash": "^4.17.21",
-    "socket.io-client": "^4.8.1"
+    "socket.io-client": "^4.8.1",
+    "express": "^4.21.1",
+    "cors": "^2.8.5"
   }
 }

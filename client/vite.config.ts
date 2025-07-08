@@ -4,9 +4,11 @@ import react from '@vitejs/plugin-react-swc';
 export default defineConfig({
   plugins: [react()],
   server: {
+    host: '0.0.0.0', // Expose to all network interfaces for Railway
+    port: parseInt(process.env.PORT || '5173'), // Use Railway's PORT or default 5173
     proxy: {
       '/api': {
-        target: 'http://localhost:5000',
+        target: process.env.VITE_API_URL || 'http://localhost:5000',
         changeOrigin: true,
         secure: false,
       },
@@ -15,5 +17,9 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: false,
+  },
+  preview: {
+    host: '0.0.0.0',
+    port: parseInt(process.env.PORT || '4173'),
   },
 });
